@@ -15,6 +15,9 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    def get_absolute_url(self):
+        return f'/products/{self.pk}'
+
     class Meta:
         verbose_name = "продукт"
         verbose_name_plural = "продукты"

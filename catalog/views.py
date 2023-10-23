@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from catalog.models import Product
 
@@ -19,42 +19,9 @@ def contact_info(request):
     return render(request, 'catalog/contact_info.html', context)
 
 
-
-def banana(request):
-    products_list = Product.objects.all()
+def product_details(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
     context = {
-        'object_list': products_list,
+        'object': product,
     }
-    return render(request, 'catalog/banana.html', context)
-
-
-def potato(request):
-    products_list = Product.objects.all()
-    context = {
-        'object_list': products_list,
-    }
-    return render(request, 'catalog/potato.html', context)
-
-
-def pork(request):
-    products_list = Product.objects.all()
-    context = {
-        'object_list': products_list,
-    }
-    return render(request, 'catalog/pork.html', context)
-
-
-def apple(request):
-    products_list = Product.objects.all()
-    context = {
-        'object_list': products_list,
-    }
-    return render(request, 'catalog/apple.html', context)
-
-
-def step(request):
-    products_list = Product.objects.all()
-    context = {
-        'object_list': products_list,
-    }
-    return render(request, 'catalog/step.html', context)
+    return render(request, 'catalog/product_details.html', context)

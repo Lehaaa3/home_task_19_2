@@ -19,17 +19,7 @@
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>- {{ product.description }}</li>
                     </ul>
-                    {% if product.name == 'Банан' %}
-                    <a class="p-2 btn btn-outline-primary" href="/banana">Купить</a>
-                    {% elif product.name == 'Яблоко' %}
-                    <a class="p-2 btn btn-outline-primary" href="/apple">Купить</a>
-                    {% elif product.name == 'Картошка' %}
-                    <a class="p-2 btn btn-outline-primary" href="/potato">Купить</a>
-                    {% elif product.name == 'Свинина' %}
-                    <a class="p-2 btn btn-outline-primary" href="/pork">Купить</a>
-                    {% elif product.name == 'Степ' %}
-                    <a class="p-2 btn btn-outline-primary" href="/step">Купить</a>
-                    {% endif %}
+                    <a href="{{ product.get_absolute_url }}" class="btn mt-auto btn-outline-danger">Детали</a>
                 </div>
             </div>
         </div>
