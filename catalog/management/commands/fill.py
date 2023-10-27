@@ -12,12 +12,6 @@ from django.shortcuts import get_object_or_404
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        Category.objects.all().delete()
-        Product.objects.all().delete()
-        management.call_command('loaddata', 'category.json')
-        management.call_command('loaddata', 'product.json')
-
-    def handle(self, *args, **options):
         path = os.path.join(BASE_DIR, 'category.json')
         path_1 = os.path.join(BASE_DIR, 'product.json')
 

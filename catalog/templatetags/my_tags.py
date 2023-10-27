@@ -1,11 +1,13 @@
 from django import template
-
-from django.conf import settings
+from django.db.models.fields.files import FieldFile
 
 register = template.Library()
 
 
 @register.simple_tag
-def mediapath(image):
-    media_url = settings.MEDIA_URL
-    return f'{media_url}{image}'
+@register.filter()
+def mediapath(data: FieldFile) -> str:
+    """
+    Make url path to media
+    """
+    return data.url if data else '#'

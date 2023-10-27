@@ -19,10 +19,10 @@
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>- {{ product.description }}</li>
                     </ul>
-                    <a href="{{ product.get_absolute_url }}" class="btn mt-auto btn-outline-danger">Детали</a>
+                    <a href="{% url 'catalog:product_details' product.pk %}" class="btn mt-auto btn-outline-danger">Детали</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
-    {% endblock %}
+{% endblock %}

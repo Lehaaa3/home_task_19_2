@@ -1,0 +1,54 @@
+[
+  {
+    "model": "blog.post",
+    "pk": 1,
+    "fields": {
+      "title": "Банан",
+      "slug": "banan",
+      "content": "Желтый и длинный",
+      "image": "posts/banan.png",
+      "date_of_creation": "2023-10-27T08:47:01.737Z",
+      "is_image": true,
+      "views_count": 13
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 2,
+    "fields": {
+      "title": "Картошка",
+      "slug": "kartoshka",
+      "content": "Большая и легко чистится",
+      "image": "posts/картошка_NiQm2bl.jfif",
+      "date_of_creation": "2023-10-27T08:46:43.455Z",
+      "is_image": true,
+      "views_count": 11
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 3,
+    "fields": {
+      "title": "Степ",
+      "slug": "step",
+      "content": "Вкусные, шоколадные",
+      "image": "posts/степ.jpg",
+      "date_of_creation": "2023-10-27T08:46:54.077Z",
+      "is_image": true,
+      "views_count": 5
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 4,
+    "fields": {
+      "title": "Свинина",
+      "slug": "svinina",
+      "content": "Полезное и сочное мясо",
+      "image": "posts/свинина_E8FNpUe.png",
+      "date_of_creation": "2023-10-27T08:46:47.639Z",
+      "is_image": true,
+      "views_count": 6
+    }
+  }
+]
