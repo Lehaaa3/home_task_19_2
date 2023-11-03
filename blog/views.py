@@ -34,14 +34,6 @@ class PostCreateView(CreateView):
     model = Post
     fields = ('title', 'content', 'image', 'slug')
 
-    def form_valid(self, form):
-        if form.is_valid():
-            new_mat = form.save()
-            new_mat.slug = slugify(new_mat.title)
-            new_mat.save()
-
-        return super().form_valid(form)
-
     def get_success_url(self):
         return reverse('blog:blog_list')
 

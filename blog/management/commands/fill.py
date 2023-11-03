@@ -1,24 +1,22 @@
-import json
-import os.path
-
-from django.core.management import BaseCommand
-from blog.models import Post
-from config.settings import BASE_DIR
+from django.core.management import BaseCommand, call_command
+from django.conf import settings
+from django.db import ProgrammingError, IntegrityError
 
 
 class Command(BaseCommand):
+    requires_migrations_checks = True
 
     def handle(self, *args, **options):
-        path = os.path.join(BASE_DIR, 'posts.json')
+        path = settings.BASE_DIR.joinpath('posts.json')
 
-        with open(path) as f:
-            file_content = f.read()
-            posts_info = json.loads(file_content)
-            posts_for_create = []
-            for info in posts_info:
-                posts_for_create.append(
-                    Post(**info["fields"])
-                )
-            Post.objects.all().delete()
-            Post.objects.bulk_create(posts_for_create)
-
+        try:
+            call_command('loaddata', path)
+        except ProgrammingError:
+            pass
+        except IntegrityError as e:
+            self.stdout.write(f'Invalid fixtures: {e}', self.style.NOTICE)
+        else:
+            self.stdout.write(
+                'Blog fixtures have been loaded',
+                self.style.SUCCESS
+            )

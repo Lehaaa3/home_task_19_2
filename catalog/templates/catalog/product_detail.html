@@ -12,11 +12,11 @@
             <img src="{% mediapath object.image %}" width="300" height="300" alt="изображение">
         </div>
         <div class="col-md-6">
-            <h2>{{ object.name }}</h2>
-            <big><p> Категория: {{ object.category }}
-                <p></big>
-            <big><p> Описание: {{ object.description }} </p></big>
-            <big><p> Цена: {{ object.price }}р </p></big>
+            <h2><p>{{ object.name }}</p></h2>
+            <big><p> Категория: <b>{{ object.category }}</b></p></big>
+            <big><p> Описание: <b>{{ object.description }} </b></p></big>
+            <big><p>Номер версии: <b>{{ object.active_version_number }}</b></p></big>
+            <big><p>Название версии: <b>{{ object.active_version_name }}</b></p></big>
         </div>
     </div>
     {% endblock %}
