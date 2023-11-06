@@ -2,7 +2,7 @@ import random
 
 from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 
@@ -21,11 +21,13 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         new_user = form.save()
-        verification = ''.join([str(random.randint(0, 9)) for i in range(12)])
+        verification = gen_verification_code_or_password()
         new_user.email_verification = verification
+        new_user.is_active = False
+        verification_url = f'http://127.0.0.1:8000/users/activate/{verification}'
         send_mail(
             subject='Потверждение почты',
-            message=f'Подтвердите вашу почту. Перейдите по ссылке: http://127.0.0.1:8000/users/activate/{verification}',
+            message=f'Подтвердите вашу почту. Перейдите по ссылке: {verification_url}',
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[new_user.email]
         )
@@ -50,26 +52,28 @@ def email_activated(request):
 
 
 def activate(request, uid):
-    for use in User.objects.all():
-        if use.email_verification == uid:
-            use.email_is_active = True
-            use.save()
-            return redirect(reverse('users:email_activated'))
+    user = get_object_or_404(User, email_verification=uid)
+    user.is_active = True
+    user.save()
     return redirect(reverse('users:email_activated'))
 
 
 def restore_password(request):
     if request.method == "POST":
         email = request.POST.get('email')
-        for use in User.objects.all():
-            if use.email == email:
-                new_password = ''.join([str(random.randint(0, 9)) for i in range(12)])
-                send_mail(
-                    subject='Восстановление пароля',
-                    message=f'Ваш новый пароль: {new_password}',
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[use.email]
-                )
-                use.set_password(new_password)
-                use.save()
+        user = get_object_or_404(User, email=email)
+        new_password = gen_verification_code_or_password()
+        send_mail(
+            subject='Восстановление пароля',
+            message=f'Ваш новый пароль: {new_password}',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[user.email]
+        )
+        user.set_password(new_password)
+        user.save()
+        return redirect(reverse('users:login'))
     return render(request, "users/restore_password.html")
+
+
+def gen_verification_code_or_password():
+    return ''.join([str(random.randint(0, 9)) for i in range(12)])
