@@ -7,12 +7,12 @@ from django.forms import models
 from prompt_toolkit.validation import ValidationError
 
 from catalog.models import Product, Version, NULLABLE
+from django.forms import BaseInlineFormSet, inlineformset_factory
 
 
 class StyleFormMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
         self.helper.form_class = 'blueForms'
@@ -20,14 +20,14 @@ class StyleFormMixin:
         self.helper.form_action = 'submit_survey'
         self.helper.add_input(Submit('submit', 'Submit'))
 
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+        # for field_name, field in self.fields.items():
+        #     field.widget.attrs['class'] = 'form-control'
 
 
 class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
-        exclude = ('date_of_creation', 'date_of_last_changing', 'version_number',)
+        exclude = ('date_of_creation', 'date_of_last_changing', 'version_number', 'owner')
 
     def clean_name(self):
         cleaned_data = self.cleaned_data['name']
@@ -51,6 +51,8 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
 
 
 class VersionForm(StyleFormMixin, forms.ModelForm):
+    ACTIVE_VERSIONS = []
+
     class Meta:
         model = Version
         fields = '__all__'

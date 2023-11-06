@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -50,7 +51,7 @@ class ProductDetailView(DetailView):
         return context
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
 
@@ -66,6 +67,8 @@ class ProductCreateView(CreateView):
     def form_valid(self, form):
         formset = self.get_context_data()['formset']
         self.object = form.save()  # для создания обязательно
+        self.object.owner = self.request.user
+        self.object.save()
         if formset.is_valid():
             formset.instance = self.object
             formset.save()
@@ -77,7 +80,7 @@ def get_success_url(self):
     return reverse('catalog:product_list')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
 
@@ -103,7 +106,7 @@ class ProductUpdateView(UpdateView):
         return reverse('catalog:product_details', args=[self.object.pk])
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
 
     def get_success_url(self):

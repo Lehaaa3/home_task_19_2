@@ -1,7 +1,6 @@
 {% extends "catalog/base.html" %}
 {% load crispy_forms_tags %}
-{% crispy product_form product_form.helper %}
-{% crispy form %}
+{% crispy post_form post_form.helper %}
 
 {% block content %}
 <div class="col-12">
@@ -29,7 +28,7 @@
             <div class="card-body">
                 {{ formset.management_form }}
                 {% for form in formset.forms %}
-                {{ form.as_p }}
+                {{ form | crispy }}
                 {% if not forloop.last %}
                 <hr>
                 {% endif %}

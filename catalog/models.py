@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -13,6 +15,8 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=3, decimal_places=0, verbose_name='цена')
     date_of_creation = models.DateTimeField(auto_now_add=True, verbose_name='дата создания')
     date_of_last_changing = models.DateTimeField(verbose_name='дата последнего изменения', **NULLABLE)
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE)
 
     def __str__(self):
         return f"{self.pk}"
@@ -46,8 +50,16 @@ class Version(models.Model):
     is_active = models.BooleanField(verbose_name="активная версия")
 
     class Meta:
-        verbose_name = "версия"
-        verbose_name_plural = "версии"
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'
+        ordering = ('product',)
+        # constraints = [
+        #     models.UniqueConstraint(
+        #         fields=['product'],
+        #         condition=Q(is_active=True),
+        #         name='only_one_active_version_for_product',
+        #     ),
+        # ]
 
 
 @receiver(post_save, sender=Version)
