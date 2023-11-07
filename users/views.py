@@ -20,7 +20,7 @@ class RegisterView(CreateView):
         return reverse('users:login')
 
     def form_valid(self, form):
-        new_user = form.save()
+        new_user = form.save(commit=False)
         verification = gen_verification_code_or_password()
         new_user.email_verification = verification
         new_user.is_active = False
